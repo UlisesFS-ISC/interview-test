@@ -1,7 +1,5 @@
 # Bonsai Interview Test
 
-# Bonsai Interview Test
-
 ## Main features
 
 ### Firebase with facebook credentials for authentication.
@@ -28,14 +26,14 @@ Mikkel Laursem.
 
 ## Captures
 
-###Log-in.
-![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/logIn.png)
+## Log-in.
+![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/logIn.gif)
 
-###Shop navigation.
-![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/shopNav.png)
+## Shop navigation.
+![Shop](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/shopNav.gif)
 
-###Cart product insertion.
-![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/cartNav.png)
+## Cart product insertion.
+![Cart](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/cartNav.gif)
 
-###User page navigation.
-![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/userNav.png)
+## User page navigation.
+![User](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/userNav.gif)
