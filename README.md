@@ -29,13 +29,13 @@ Mikkel Laursem.
 ## Captures
 
 ###Log-in.
-![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview-UlisesFS/docs/logIn.png)
+![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/logIn.png)
 
 ###Shop navigation.
-![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview-UlisesFS/docs/shopNav.png)
+![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/shopNav.png)
 
 ###Cart product insertion.
-![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview-UlisesFS/docs/cartNav.png)
+![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/cartNav.png)
 
 ###User page navigation.
-![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview-UlisesFS/docs/userNav.png)
+![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/userNav.png)
