@@ -22,6 +22,7 @@ class User extends Component {
     **** Static component with the user details
      */
     static UserInfoSection({ userData, handleLogOutButton}) {
+
         if (!userData) return null;
 
         const info = [

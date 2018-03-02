@@ -7,7 +7,7 @@ import {Session} from 'meteor/session';
 import Button from "../components/Button.jsx";
 import Details from "../components/Details.jsx";
 import ModalImpl from "../components/Modal.jsx";
-
+import {Input, Label} from "reactstrap";
 
 class Product extends PureComponent {
 
@@ -23,7 +23,7 @@ class Product extends PureComponent {
 
         if(currentStock < 1){
             buyButton = (
-                <Button className="disabled" disabled="true">
+                <Button type="button" className="product-disabled" disabled>
                     Out of stock
                 </Button>
             );
@@ -41,7 +41,7 @@ class Product extends PureComponent {
             );
         } else {
             buyButton = (
-               <Button className="disabled" disabled="true">
+               <Button type="button" className="product-disabled" disabled>
                    Already on cart
                </Button>
            );
@@ -91,8 +91,8 @@ class Product extends PureComponent {
         if (maxQuantity > 0 && !isOnCart) {
             numberField = (
                 <div>
-                    <label>Set amount: </label>
-                    <input className="product-number"
+                    <Label>Set order amount: </Label>
+                    <Input className="product-number"
                            type="number"
                            min="1"
                            max={maxQuantity}
@@ -321,13 +321,13 @@ class Product extends PureComponent {
                 <img alt={name} src={image}/>
                 <div className="details">
                     <Details info={info}/>
+                    <BuyAmountField
+                        handleQuantityToBuyChange={this.handleQuantityToBuyChange}
+                        maxQuantity={quantity}
+                        currentQuantity={quantityToBuy}
+                        isOnCart={isOnCart}
+                    />
                     <div className="product-button-container">
-                        <BuyAmountField
-                            handleQuantityToBuyChange={this.handleQuantityToBuyChange}
-                            maxQuantity={quantity}
-                            currentQuantity={quantityToBuy}
-                            isOnCart={isOnCart}
-                        />
                         <BuyButton
                             isOnCart={isOnCart}
                             productId={id}

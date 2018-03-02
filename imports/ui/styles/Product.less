@@ -6,6 +6,10 @@
   flex-wrap: wrap;
   justify-content: center;
 
+  &-number {
+    max-width: 3em;
+  }
+
   img {
     flex-basis: 300px;
     box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.45);
@@ -14,6 +18,7 @@
 
   .product-button-container {
     display: flex;
+    margin-top: 1em;
 
     .product-likeButton {
       margin: 5%;
@@ -26,6 +31,11 @@
       max-width: 4em;
       height: 4em;
       background-color: @color-success;
+    }
+
+    .product-disabled {
+      background-color: @color-neutral;
+      color: @bonsai-dark-grey;
     }
 
     button {
