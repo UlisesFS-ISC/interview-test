@@ -9,15 +9,16 @@
 
 ### Shop and Cart implementation.
 
-*Added Cart page. Can roll back selected items and submit orders.
-*Products can be purchased in quantity, the total sum will be displayed once the user navigates to the Cart page.
-*Ability to Like products and check the amount of likes said product has received.
-*Pagination over shop page.
-*Spinner display when loading data from the server.
-*Success messages and error handling via custom modal component.
+* Added Cart page. Can roll back selected items and submit orders.
+* Products can be purchased in quantity, the total sum will be displayed once the user navigates to the Cart page.
+* Ability to Like products and check the amount of likes said product has received.
+* Ability to Like products and check the amount of likes said product has received.
+* Pagination over shop page.
+* Spinner display when loading data from the server.
+* Success messages and error handling via custom modal component.
 
 ### User page
-*User page to check submitted order history and user personal data.
+* User page to check submitted order history and user personal data.
 
 ## Acknowledgments
 
