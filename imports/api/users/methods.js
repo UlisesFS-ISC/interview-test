@@ -17,7 +17,7 @@ export const getUserById = userId => {
   } catch (error) {
     throw new Meteor.Error(
       `${__filename}:getUserById.findOrFetchError`,
-      `Could not find or fetch product with user id: '${userId}'`,
+      `Could not find or fetch User with user id: '${userId}'`,
       error
     );
   }

@@ -28,12 +28,16 @@ Mikkel Laursem.
 
 ## Log-in.
 ![Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/logIn.gif)
+![Facebook_Login](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/facebookLogin.gif)
+![Error](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/signupError.gif)
 
 ## Shop navigation.
 ![Shop](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/shopNav.gif)
+![Spinner](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/spinner.gif)
 
 ## Cart product insertion.
 ![Cart](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/cartNav.gif)
+![Orders](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/orderPlacement.gif)
 
 ## User page navigation.
 ![User](https://raw.githubusercontent.com/UlisesFS-ISC/interview-test/interview_UlisesFS/docs/userNav.gif)

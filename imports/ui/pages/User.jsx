@@ -83,6 +83,14 @@ class User extends Component {
             );
         });
 
+        if (orderEntries.length === 0){
+            orderEntries.push(
+                <div className="info" >
+                    <h4>No orders available to display</h4>
+                </div>
+            )
+        }
+
         return (
             <div  className="user-orders">
                 <h3>Order history</h3>
