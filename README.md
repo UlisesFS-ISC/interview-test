@@ -25,6 +25,9 @@
 Spinner md component created by:
 Mikkel Laursem.
 
+## Meteor session set-up
+Just run the command ' meteor add session ' to add the session module required to run the with "npm run start"
+
 ## Captures
 
 ## Log-in.
