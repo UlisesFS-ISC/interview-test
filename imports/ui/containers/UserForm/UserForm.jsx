@@ -1,12 +1,15 @@
 // Framework
 import React, { PureComponent } from "react";
-import {authHandler} from '../../api/authentication/auth-handler';
+import {authHandler} from '../../../api/authentication/auth-handler';
 import {Meteor} from "meteor/meteor";
 
 // Components
-import FormImpl from "../components/Form.jsx";
-import ModalImpl from "../components/Modal.jsx";
-import Button from "../components/Button.jsx";
+import FormImpl from "../../components/Form.jsx";
+import ModalImpl from "../../components/Modal.jsx";
+import Button from "../../components/Button.jsx";
+
+//Util
+import {FORM_TYPES, MODAL_TYPES} from "../../Constants"
 
 class UserForm extends PureComponent {
 
@@ -15,7 +18,7 @@ class UserForm extends PureComponent {
         this.state = {
             email: "",
             pass: "",
-            serviceError: null,
+            serviceErrorFlag: false,
             modalMessage: null
         };
     }
@@ -73,7 +76,10 @@ class UserForm extends PureComponent {
         };
         Meteor.call("logHistory.insertLogEntry", logEntry, (error, response) => {
             if (error) {
-                this.setState(() => ({serviceError: "Could not insert log entry"}));
+                this.setState(() => ({
+                    modalMessage: "Could not insert log entry",
+
+                }));
             } else {
                 if (!response) return null;
                 this.setState(() =>
@@ -115,7 +121,10 @@ class UserForm extends PureComponent {
 
         Meteor.call("users.insertUser", user, (error, response) => {
             if (error) {
-                this.setState(() => ({serviceError: "Could not insert user to database"}));
+                this.setState(() => ({
+                    serviceErrorFlag: true,
+                    modalMessage: "Could not insert user to database"
+                }));
             } else {
                 let message = "Member sign-up success, try to log into the shop";
                 if (!response) {
@@ -138,7 +147,8 @@ class UserForm extends PureComponent {
     onError = (error) => {
         this.setState(() =>
             ({
-                serviceError: error
+                serviceErrorFlag: true,
+                modalMessage: error
             })
         );
     };
@@ -151,7 +161,7 @@ class UserForm extends PureComponent {
     cleanMessages = () => {
         this.setState(() =>
             ({
-                serviceError: null,
+                serviceErrorFlag: false,
                 modalMessage: null
             })
         );
@@ -159,14 +169,14 @@ class UserForm extends PureComponent {
 
 
     render() {
-        const {serviceError, modalMessage} = this.state;
+        const {serviceErrorFlag, modalMessage} = this.state;
         const {formType, children} = this.props;
         const authenticationHandler = new authHandler();
         let onSubmit = this.signUp;
         let facebookLoginButton = null;
         let modal = null;
 
-        if(formType === "Log-In"){
+        if(formType === FORM_TYPES.LOG_IN.LABEL){
             onSubmit = this.logIn;
             facebookLoginButton = (
                 <Button
@@ -179,13 +189,9 @@ class UserForm extends PureComponent {
             );
         }
 
-        if (serviceError !== null || modalMessage !== null) {
+        if (modalMessage !== null) {
             let content = modalMessage;
-            let modalClassName = "modal-success";
-            if (this.state.serviceError) {
-                content = serviceError;
-                modalClassName ="modal-error";
-            }
+            let modalClassName = serviceErrorFlag ? MODAL_TYPES.SUCCESS:  MODAL_TYPES.ERROR;
             modal = (
                 <ModalImpl
                     className={modalClassName}

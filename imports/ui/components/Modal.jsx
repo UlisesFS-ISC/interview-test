@@ -7,7 +7,6 @@ class ModalImpl extends React.Component {
         this.state = {
             modal: true
         };
-        this.toggle = this.toggle.bind(this);
     }
 
     toggle = () => {

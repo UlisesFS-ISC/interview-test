@@ -3,13 +3,16 @@ import React, { PureComponent } from "react";
 import { Session } from 'meteor/session';
 
 // Components
-import Page from "../components/Page.jsx";
-import ModalImpl from "../components/Modal.jsx";
-import Button from "../components/Button.jsx";
+import Page from "../../containers/Page/Page.jsx";
+import ModalImpl from "../../components/Modal.jsx";
+import Button from "../../components/Button.jsx";
 
 // Containers
-import UserForm from "../containers/UserForm";
+import UserForm from "../../containers/UserForm/UserForm";
 import { Container } from "reactstrap";
+
+// Util
+import {MODAL_TYPES} from "../../Constants"
 
 class Home extends PureComponent {
 
@@ -50,7 +53,7 @@ class Home extends PureComponent {
 
       let signUpModal = !signUpModalFlag ? null :(
           <ModalImpl
-              className={"modal-form"}
+              className={MODAL_TYPES.FORM}
               title={"Sign-Up"}
           >
               <UserForm formType={'Sign-Up'} history={this.props.history} />

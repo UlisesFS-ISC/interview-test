@@ -2,20 +2,23 @@
 import React, {Component} from "react";
 import {Meteor} from "meteor/meteor";
 import {Session} from 'meteor/session';
-import {authHandler} from '../../api/authentication/auth-handler';
+import {authHandler} from '../../../api/authentication/auth-handler';
 
 // Third-party
 import MDSpinner from "react-md-spinner";
 
 // Components
 import {Row} from "reactstrap";
-import Page from "../components/Page.jsx";
-import Button from "../components/Button.jsx";
-import ModalImpl from "../components/Modal.jsx";
-import Details from "../components/Details.jsx";
+import Page from "../../containers/Page/Page.jsx";
+import Button from "../../components/Button.jsx";
+import ModalImpl from "../../components/Modal.jsx";
+import Details from "../../components/Details.jsx";
 import { Container } from "reactstrap";
 
-// Components
+// Util
+import {MODAL_TYPES} from '../../Constants.js'
+
+
 class User extends Component {
 
     /*
@@ -59,7 +62,7 @@ class User extends Component {
                 const info = [
                     {label: "Name", value: item.productName},
                     {label: "Quantity", value: item.quantity},
-                    {label: "Amount to pay", value: item.price}
+                    {label: "Amount to pay", value: (item.price * item.quantity)}
                 ];
                 orderItems.push(<Details info={info} key={itemKey + item.productId}/>)
             });
@@ -106,7 +109,7 @@ class User extends Component {
             userOrders: [],
             userData: {},
             itemLoadFlag: false,
-            serviceError: null
+            errorMessage: null
         };
     }
     /*
@@ -119,12 +122,12 @@ class User extends Component {
         }
          Meteor.call("users.getUserByUserName", userName, (error, response) => {
              if (error) {
-                this.setState(() => ({ serviceError: "Could not fetch user data" }));
+                this.setState(() => ({ errorMessage: "Could not fetch user data" }));
              } else {
                 this.setState(() => ({ userData: response }));
                  Meteor.call("orders.getOrdersByUserName", userName, (error, response) => {
                      if (error) {
-                         this.setState(() => ({ serviceError: "Could not fetch orders" }));
+                         this.setState(() => ({ errorMessage: "Could not fetch orders" }));
                      } else {
                          this.setState(() => ({
                              userOrders: response,
@@ -169,7 +172,7 @@ class User extends Component {
     cleanMessages = () => {
         this.setState(() =>
             ({
-                serviceError: null
+                errorMessage: null
             })
         );
     };
@@ -184,21 +187,18 @@ class User extends Component {
 
     render() {
         const { UserOrdersSection, UserInfoSection } = User;
-        let { userOrders, serviceError, userData, itemLoadFlag } = this.state;
+        let { userOrders, errorMessage, userData, itemLoadFlag } = this.state;
         let userPageContent;
-        let modal = null;
+        let modalProps = null;
 
-        if (serviceError !== null) {
-            let content = serviceError;
-            let modalClassName ="modal-error";
-            modal = (
-                <ModalImpl
-                    className={modalClassName}
-                    title={"User"}
-                    children={content}
-                    onClose={() => this.cleanMessages()}
-                />
-            );
+        if (errorMessage !== null) {
+            let content = errorMessage;
+            modalProps = {
+                type: MODAL_TYPES.ERROR,
+                title: "Cart",
+                content: content,
+                onClose: this.cleanMessages
+            };
         }
 
         if(!itemLoadFlag) {
@@ -223,8 +223,11 @@ class User extends Component {
             );
         }
         return (
-            <Page pageTitle="User panel" history goBack={this.goBack} goUserPage={this.goUserPage}>
-                {modal}
+            <Page pageTitle="User panel"
+                  history goBack={this.goBack}
+                  goUserPage={this.goUserPage}
+                  modalProps={modalProps}
+            >
                 {userPageContent}
             </Page>
         );

@@ -214,12 +214,32 @@ export const getProduct = (merchantId, productId) => {
   return product;
 };
 
+/**
+ * Returns number of merchants
+ *
+ * @returns {Integer} number of merchants in database.
+ */
+export const getMerchantsCount = () => {
+  let merchantCount;
+  try {
+    merchantCount = Merchants.find().count();
+  } catch (error) {
+    throw new Meteor.Error(
+      `${__filename}:getProduct.findOrFetchError`,
+      `Could not get product`,
+      error
+    );
+  }
+  return merchantCount;
+};
+
 // Register meteor methods.
 Meteor.methods({
   "merchants.setProductAvailability": setProductAvailability,
   "merchants.rollBackProductAvailability": rollBackProductAvailability,
   "merchants.getMerchantById": getMerchantById,
   "merchants.getMerchantsWithPagination": getMerchantsWithPagination,
+  "merchants.getMerchantsCount": getMerchantsCount,
   "merchants.getProduct": getProduct,
   "merchants.getMerchants": getMerchants
 });

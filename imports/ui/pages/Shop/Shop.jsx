@@ -8,11 +8,13 @@ import MDSpinner from "react-md-spinner";
 
 // Components
 import {Row, Col} from "reactstrap";
-import Page from "../components/Page.jsx";
-import Button from "../components/Button.jsx";
-import Product from "../containers/Product";
-import ModalImpl from "../components/Modal.jsx";
+import Page from "../../containers/Page/Page.jsx";
+import Button from "../../components/Button.jsx";
+import Product from "../../containers/Product/Product";
 import { Container } from "reactstrap";
+
+// Util
+import {MODAL_TYPES} from '../../Constants.js'
 
 const PAGINATION_ELEMENTS = 4;
 
@@ -41,7 +43,7 @@ class Shop extends Component {
             );
         }
 
-        if(currentIndex < limit) {
+        if(currentIndex <= limit) {
             nextButton = (
                 <Col>
                     <Button
@@ -87,10 +89,10 @@ class Shop extends Component {
         super(props);
         this.state = {
             paginationIndex: 0,
-            limit: 100,
+            limit: 1,
             merchants: [],
             dataLoadFlag: false,
-            serviceError: null,
+            serviceErrorFlag: false,
             modalMessage: null
         };
     }
@@ -106,12 +108,27 @@ class Shop extends Component {
         }
         Meteor.call("merchants.getMerchantsWithPagination", 0, PAGINATION_ELEMENTS, (error, response) => {
             if (error) {
-                this.setState(() => ({serviceError: "Could not fetch merchants"}));
+                this.setState(() => ({
+                    serviceErrorFlag: true,
+                    modalMessage: "Could not fetch any more merchants",
+                }));
             } else {
                 this.setState(() => ({
                     merchants: response,
                     dataLoadFlag: true
                 }));
+                Meteor.call("merchants.getMerchantsCount", (error, response) => {
+                    if (error) {
+                        this.setState(() => ({
+                            serviceErrorFlag: true,
+                            modalMessage: "Could not fetch quantity of merchants"
+                        }));
+                    } else {
+                        this.setState(() => ({
+                            limit: (response / PAGINATION_ELEMENTS)
+                        }));
+                    }
+                });
             }
         });
     }
@@ -137,7 +154,10 @@ class Shop extends Component {
         let nextPaginationIndex = paginationIndex + PAGINATION_ELEMENTS;
         Meteor.call("merchants.getMerchantsWithPagination", nextPaginationIndex, PAGINATION_ELEMENTS, (error, response) => {
             if (error) {
-                this.setState(() => ({ serviceError: "Could not fetch merchants"}));
+                this.setState(() => ({
+                    serviceErrorFlag: true,
+                    modalMessage: "Could not fetch quantity of merchants"
+                }));
             } else {
                 this.setState(() => ({
                     merchants: response,
@@ -154,35 +174,28 @@ class Shop extends Component {
     cleanMessages = () => {
         this.setState(() =>
             ({
-                serviceError: null,
+                serviceErrorFlag: null,
                 modalMessage: null
             })
         );
     };
 
     render() {
-        const {merchants,  serviceError, modalMessage, dataLoadFlag, limit, paginationIndex} = this.state;
+        const {merchants,  serviceErrorFlag, modalMessage, dataLoadFlag, limit, paginationIndex} = this.state;
         let {NavigationButtons, CartButton} = Shop;
         let shopPageContent = null;
-        let modal = null;
+        let modalProps;
 
-        if (serviceError !== null || modalMessage !== null) {
+        if (modalMessage !== null) {
             let content = modalMessage;
-            let modalClassName = "modal-success";
-            if (this.state.serviceError) {
-                content = serviceError;
-                modalClassName ="modal-error";
-            }
-            modal = (
-                <ModalImpl
-                    className={modalClassName}
-                    title={"Cart"}
-                    children={content}
-                    onClose={() => this.cleanMessages()}
-                />
-            );
+            let modalType =  serviceErrorFlag ? MODAL_TYPES.ERROR : MODAL_TYPES.SUCCESS;
+            modalProps = {
+                type: modalType,
+                title: "Cart",
+                content: content,
+                onClose: this.cleanMessages
+            };
         }
-
         if (!dataLoadFlag) {
             shopPageContent = (
                     <div className="shop-spinner-container">
@@ -215,8 +228,11 @@ class Shop extends Component {
         }
 
         return (
-            <Page pageTitle="shop" history goBack={this.goBack} goUserPage={this.goUserPage}>
-                {modal}
+            <Page pageTitle="shop"
+                  history goBack={this.goBack}
+                  goUserPage={this.goUserPage}
+                  modalProps={modalProps}
+            >
                 {shopPageContent}
             </Page>
         );

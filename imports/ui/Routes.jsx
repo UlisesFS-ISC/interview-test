@@ -7,10 +7,10 @@ import {
 } from "react-router-dom";
 
 // Pages
-import Shop from "./pages/Shop.jsx";
-import Home from "./pages/Home.jsx";
-import Cart from "./pages/Cart.jsx";
-import User from "./pages/User.jsx";
+import Shop from "./pages/Shop/Shop.jsx";
+import Home from "./pages/Home/Home.jsx";
+import Cart from "./pages/Cart/Cart.jsx";
+import User from "./pages/User/User.jsx";
 
 const Routes = () =>
   <Router history={browserHistory}>

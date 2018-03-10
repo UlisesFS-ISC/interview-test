@@ -8,10 +8,13 @@ import MDSpinner from "react-md-spinner";
 
 // Components
 import { Row, Col } from "reactstrap";
-import Page from "../components/Page.jsx";
-import Button from "../components/Button.jsx";
-import ModalImpl from "../components/Modal.jsx";
-import Details from "../components/Details.jsx";
+import Page from "../../containers/Page/Page.jsx";
+import Button from "../../components/Button.jsx";
+import ModalImpl from "../../components/Modal.jsx";
+import Details from "../../components/Details.jsx";
+
+// Util
+import {MODAL_TYPES} from '../../Constants.js'
 
 class Cart extends Component {
 
@@ -21,7 +24,7 @@ class Cart extends Component {
             items: [],
             totalAmount: 0,
             itemLoadFlag: false,
-            serviceError: null,
+            serviceErrorFlag: false,
             modalMessage: null
         };
     }
@@ -38,7 +41,10 @@ class Cart extends Component {
         }
         Meteor.call("carts.getCartByUserName", userName, (error, response) => {
             if (error) {
-                this.setState(() => ({serviceError: "Could not get cart details"}));
+                this.setState(() => ( {
+                    serviceErrorFlag: true,
+                    modalMessage: "Could not load the cart items"
+                }));
             } else {
                 if (!response) {
                     this.setState(() =>
@@ -47,7 +53,7 @@ class Cart extends Component {
                         })
                     );
                     return null
-                };
+                }
                 let totalSumToPay = 0;
                 response.items.forEach(item => {
                     totalSumToPay += (parseFloat(item.price) * parseFloat(item.quantity));
@@ -71,12 +77,18 @@ class Cart extends Component {
     handleRemoveFromCart = (userName, productId, merchantId, price, quantity) => {
         Meteor.call("carts.removeItemFromUserCart", userName, productId, (error, response) => {
             if (error) {
-                this.setState(() => ({serviceError: "Could not remove cart item"}));
+                this.setState(() => ({
+                    serviceErrorFlag: true,
+                    modalMessage: "Could not remove cart item"
+                }));
             } else {
                 this.setState(() => ({modalMessage: "Item removed from your cart"}));
                 Meteor.call("merchants.rollBackProductAvailability", merchantId, productId, quantity, (error, response) => {
                     if (error) {
-                        this.setState(() => ({serviceError: "Could not set the product availability back"}));
+                        this.setState(() => ( {
+                            serviceErrorFlag: true,
+                            modalMessage: "Could not set back the product stock"
+                        }));
                     } else {
                         if (!response) return null;
                         let newUserCartItems = this.state.items.filter( item => {return item.productId !== productId});
@@ -100,13 +112,21 @@ class Cart extends Component {
     handleCheckIn = (order) => {
         Meteor.call("orders.insertOrder", order, (error, response) => {
             if (error) {
-                this.setState(() => ({serviceError: "Could not make order"}));
+                this.setState(() => ( {
+                    serviceErrorFlag: true,
+                    modalMessage: "Could not submit the order"
+                }));
             } else {
-                this.setState(() => ({modalMessage: "Order as been submitted"}));
+                this.setState(() => ({modalMessage: "Order has been submitted"}));
 
                 Meteor.call("carts.emptyUserCart", order.userName, (error, response) => {
                     if (error) {
-                        this.setState(() => ({serviceError: "Could not empty cart"}));
+                        this.setState(() => (
+                            {
+                                serviceErrorFlag: true,
+                                modalMessage: "Could not empty the cart"
+                            }
+                        ));
                     } else {
                         this.setState(() =>
                             ({
@@ -128,7 +148,7 @@ class Cart extends Component {
     cleanMessages = () => {
         this.setState(() =>
             ({
-                serviceError: null,
+                serviceErrorFlag: false,
                 modalMessage: null
             })
         );
@@ -137,25 +157,19 @@ class Cart extends Component {
     render() {
         let userName = Session.get('user');
         let currentTime = Date.now();
-        const { items, serviceError, totalAmount, itemLoadFlag, modalMessage} = this.state;
+        const { items, serviceErrorFlag, totalAmount, itemLoadFlag, modalMessage} = this.state;
         let cartPageContent = null;
-        let modal = null;
+        let modalProps;
 
-        if (serviceError !== null || modalMessage !== null) {
+        if (modalMessage !== null) {
             let content = modalMessage;
-            let modalClassName = "modal-success";
-            if (this.state.serviceError) {
-                content = serviceError;
-                modalClassName ="modal-error";
-            }
-            modal = (
-                <ModalImpl
-                    className={modalClassName}
-                    title={"Cart"}
-                    children={content}
-                    onClose={() => this.cleanMessages()}
-                />
-            );
+            let modalType =  serviceErrorFlag ? MODAL_TYPES.ERROR : MODAL_TYPES.SUCCESS;
+            modalProps = {
+                type: modalType,
+                title: "Cart",
+                content: content,
+                onClose: this.cleanMessages
+            };
         }
         if(!itemLoadFlag) {
             cartPageContent = (
@@ -220,8 +234,12 @@ class Cart extends Component {
         }
 
         return(
-            <Page pageTitle="cart" history goBack={this.goBack} goUserPage={this.goUserPage}>
-                {modal}
+            <Page pageTitle="cart"
+                  history
+                  goBack={this.goBack}
+                  goUserPage={this.goUserPage}
+                  modalProps={modalProps}
+            >
                 {cartPageContent}
             </Page>
         );

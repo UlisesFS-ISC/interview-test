@@ -4,9 +4,9 @@ import {Meteor} from "meteor/meteor";
 import {Session} from 'meteor/session';
 
 // Components
-import Button from "../components/Button.jsx";
-import Details from "../components/Details.jsx";
-import ModalImpl from "../components/Modal.jsx";
+import Button from "../../components/Button.jsx";
+import Details from "../../components/Details.jsx";
+import ModalImpl from "../../components/Modal.jsx";
 import {Input, Label} from "reactstrap";
 
 class Product extends PureComponent {

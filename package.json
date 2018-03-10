@@ -20,10 +20,13 @@
     "react-addons-transition-group": "15.6.0",
     "react-dom": "15.6.1",
     "react-md-spinner": "^0.2.5",
+    "react-redux": "^5.0.7",
     "react-router": "4.2.0",
     "react-router-dom": "4.2.2",
     "react-transition-group": "1.1.2",
-    "reactstrap": "4.8.0"
+    "reactstrap": "4.8.0",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.16.0"
   },
   "devDependencies": {
     "autoprefixer": "7.1.2",
