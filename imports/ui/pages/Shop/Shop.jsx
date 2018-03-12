@@ -1,6 +1,5 @@
 // Framework
 import React, {Component} from "react";
-import {Meteor} from "meteor/meteor";
 import {Session} from 'meteor/session';
 
 // Third-party
@@ -22,19 +21,19 @@ class Shop extends Component {
 
     /*
      *****
-     ***** Static navigation functions to move across different merchant products (set to load 4 merchant's products at a time).
+     ***** Static navigation component to move across different merchant products (set to load 4 merchants at a time).
      *****
      */
-    static NavigationButtons = ({setPaginationIndex, currentIndex, limit}) => {
+    static NavigationButtons = ({initiateMerchantCalls, currentIndex, limit}) => {
         let previousButton = null;
         let nextButton  = null;
-        if(currentIndex > 0) {
+        if(currentIndex > PAGINATION_ELEMENTS) {
             previousButton = (
                 <Col>
                     <Button
                         className="shop-previous-button"
                         onClick={() => {
-                            setPaginationIndex('prev', currentIndex);
+                            initiateMerchantCalls(currentIndex - PAGINATION_ELEMENTS, currentIndex );
                         }}
                     >
                         {'<< Prev'}
@@ -43,13 +42,13 @@ class Shop extends Component {
             );
         }
 
-        if(currentIndex <= limit) {
+        if(currentIndex < (limit)) {
             nextButton = (
                 <Col>
                     <Button
                         className="shop-next-button"
                         onClick={() => {
-                            setPaginationIndex('next', currentIndex);
+                            initiateMerchantCalls(currentIndex, currentIndex + PAGINATION_ELEMENTS);
                         }}
                     >
                         {'Next >>'}
@@ -85,115 +84,41 @@ class Shop extends Component {
         )
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            paginationIndex: 0,
-            limit: 1,
-            merchants: [],
-            dataLoadFlag: false,
-            serviceErrorFlag: false,
-            modalMessage: null
-        };
-    }
-
     /*
      *****
      ***** Handles session redirect before mounting.
-     ***** Loads the first batch of data to display
+     *****
      */
     componentWillMount() {
         if (!Session.get('user')) {
             this.props.history.push("/");
         }
-        Meteor.call("merchants.getMerchantsWithPagination", 0, PAGINATION_ELEMENTS, (error, response) => {
-            if (error) {
-                this.setState(() => ({
-                    serviceErrorFlag: true,
-                    modalMessage: "Could not fetch any more merchants",
-                }));
-            } else {
-                this.setState(() => ({
-                    merchants: response,
-                    dataLoadFlag: true
-                }));
-                Meteor.call("merchants.getMerchantsCount", (error, response) => {
-                    if (error) {
-                        this.setState(() => ({
-                            serviceErrorFlag: true,
-                            modalMessage: "Could not fetch quantity of merchants"
-                        }));
-                    } else {
-                        this.setState(() => ({
-                            limit: (response / PAGINATION_ELEMENTS)
-                        }));
-                    }
-                });
-            }
-        });
     }
-
 
     /*
      *****
-     ***** Sets the pagination index to load the next/previous batch of merchant products.
+     ***** Dispatches action to load merchant data.
      *****
      */
-    setPaginationIndex = (action, paginationIndex) => {
-        if (action === "next") {
-            this.setState(() => ({
-                paginationIndex: paginationIndex + PAGINATION_ELEMENTS,
-                dataLoadFlag: false
-            }));
-        } else  if (action === "prev") {
-            this.setState(() => ({
-                paginationIndex: paginationIndex - PAGINATION_ELEMENTS,
-                dataLoadFlag: false
-            }));
-        }
-        let nextPaginationIndex = paginationIndex + PAGINATION_ELEMENTS;
-        Meteor.call("merchants.getMerchantsWithPagination", nextPaginationIndex, PAGINATION_ELEMENTS, (error, response) => {
-            if (error) {
-                this.setState(() => ({
-                    serviceErrorFlag: true,
-                    modalMessage: "Could not fetch quantity of merchants"
-                }));
-            } else {
-                this.setState(() => ({
-                    merchants: response,
-                    dataLoadFlag: true
-                }));
-            }
-        });
-    };
+    componentDidMount(){
+        this.props.initiateMerchantCalls(0, PAGINATION_ELEMENTS);
+    }
 
     goBack = () => this.props.history.push("/");
-
     goUserPage = () => this.props.history.push("/user");
-
-    cleanMessages = () => {
-        this.setState(() =>
-            ({
-                serviceErrorFlag: null,
-                modalMessage: null
-            })
-        );
-    };
-
     render() {
-        const {merchants,  serviceErrorFlag, modalMessage, dataLoadFlag, limit, paginationIndex} = this.state;
+        const {merchants,  serviceErrorFlag, message, dataLoadFlag, limit, index, history, initiateMerchantCalls, cleanMessages} = this.props;
         let {NavigationButtons, CartButton} = Shop;
         let shopPageContent = null;
         let modalProps;
 
-        if (modalMessage !== null) {
-            let content = modalMessage;
+        if (message !== null) {
             let modalType =  serviceErrorFlag ? MODAL_TYPES.ERROR : MODAL_TYPES.SUCCESS;
             modalProps = {
                 type: modalType,
-                title: "Cart",
-                content: content,
-                onClose: this.cleanMessages
+                title: "Shop",
+                content: message,
+                onClose: cleanMessages
             };
         }
         if (!dataLoadFlag) {
@@ -221,8 +146,8 @@ class Shop extends Component {
                         {products.map(({id, ...product}) =>
                             <Product id={id} {...product} key={id}/>
                         )}
-                        <NavigationButtons setPaginationIndex={this.setPaginationIndex} currentIndex={paginationIndex} limit={limit} />
-                        <CartButton history={this.props.history} />
+                        <NavigationButtons initiateMerchantCalls={initiateMerchantCalls} currentIndex={index} limit={limit} />
+                        <CartButton history={history} />
                     </Container>
             );
         }

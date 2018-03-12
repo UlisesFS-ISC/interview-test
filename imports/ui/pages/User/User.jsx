@@ -1,6 +1,5 @@
 // Framework
 import React, {Component} from "react";
-import {Meteor} from "meteor/meteor";
 import {Session} from 'meteor/session';
 import {authHandler} from '../../../api/authentication/auth-handler';
 
@@ -11,7 +10,6 @@ import MDSpinner from "react-md-spinner";
 import {Row} from "reactstrap";
 import Page from "../../containers/Page/Page.jsx";
 import Button from "../../components/Button.jsx";
-import ModalImpl from "../../components/Modal.jsx";
 import Details from "../../components/Details.jsx";
 import { Container } from "reactstrap";
 
@@ -62,7 +60,7 @@ class User extends Component {
                 const info = [
                     {label: "Name", value: item.productName},
                     {label: "Quantity", value: item.quantity},
-                    {label: "Amount to pay", value: (item.price * item.quantity)}
+                    {label: "Amount to pay", value: (item.price * item.quantity).toFixed(2)}
                 ];
                 orderItems.push(<Details info={info} key={itemKey + item.productId}/>)
             });
@@ -88,7 +86,7 @@ class User extends Component {
 
         if (orderEntries.length === 0){
             orderEntries.push(
-                <div className="info" >
+                <div className="info" key="no-data">
                     <h4>No orders available to display</h4>
                 </div>
             )
@@ -102,80 +100,14 @@ class User extends Component {
         );
     }
 
-
-    constructor() {
-        super();
-        this.state = {
-            userOrders: [],
-            userData: {},
-            itemLoadFlag: false,
-            errorMessage: null
-        };
-    }
-    /*
-     **** The user account and order data will be fetch from the API and will be set to state
-     */
-    componentDidMount() {
+    componentWillMount() {
         const userName = Session.get('user');
         if (!userName) {
             this.props.history.push("/");
         }
-         Meteor.call("users.getUserByUserName", userName, (error, response) => {
-             if (error) {
-                this.setState(() => ({ errorMessage: "Could not fetch user data" }));
-             } else {
-                this.setState(() => ({ userData: response }));
-                 Meteor.call("orders.getOrdersByUserName", userName, (error, response) => {
-                     if (error) {
-                         this.setState(() => ({ errorMessage: "Could not fetch orders" }));
-                     } else {
-                         this.setState(() => ({
-                             userOrders: response,
-                             itemLoadFlag: true
-                         }));
-                     }
-                 });
-
-             }
-         });
-
-    };
-
-    /*
-    *****
-    ***** Static component with the user details
-    *****
-     */
-    componentDidUpdate() {
-        const {userOrders, dataLoadFlag} = this.state;
-        if (userOrders && !dataLoadFlag) {
-            this.setState(() => ({dataLoadFlag: true}));
-        }
+        this.props.initiateUserCalls();
     }
 
-    /*
-     *****
-     ***** uses auth-handler to remove session variables and redirect to Home
-     *****
-     */
-    handleLogOutButton = () => {
-        const auth = new authHandler();
-        auth.logout();
-        this.props.history.push("/")
-    };
-
-    /*
-     *****
-     ***** Resets the modal messages so they won't fire the modal again
-     *****
-     */
-    cleanMessages = () => {
-        this.setState(() =>
-            ({
-                errorMessage: null
-            })
-        );
-    };
 
     /*
      *****
@@ -187,25 +119,24 @@ class User extends Component {
 
     render() {
         const { UserOrdersSection, UserInfoSection } = User;
-        let { userOrders, errorMessage, userData, itemLoadFlag } = this.state;
+        let { userOrders, errorMessage, userData, dataLoadFlag, history, cleanMessage, logOut } = this.props;
         let userPageContent;
         let modalProps = null;
 
         if (errorMessage !== null) {
-            let content = errorMessage;
             modalProps = {
                 type: MODAL_TYPES.ERROR,
-                title: "Cart",
-                content: content,
-                onClose: this.cleanMessages
+                title: "User",
+                content: errorMessage,
+                onClose: cleanMessage
             };
         }
 
-        if(!itemLoadFlag) {
+        if(!dataLoadFlag) {
             userPageContent = (
                 <Row className="user-page">
                     <div className="user-message-container">
-                        <h1>{"Loading "}</h1>
+                        <h1>Loading </h1>
                         <MDSpinner className="user-spinner"/>
                     </div>
                 </Row>
@@ -215,7 +146,11 @@ class User extends Component {
                 <Container className="user-page">
                     <div className="user-info">
                         <Row>
-                            <UserInfoSection userData={userData} handleLogOutButton={this.handleLogOutButton} />
+                            <UserInfoSection userData={userData} handleLogOutButton={ () =>
+                            {
+                                logOut();
+                                history.push("/");
+                            }} />
                             <UserOrdersSection userOrders={userOrders} />
                         </Row>
                     </div>

@@ -17,7 +17,7 @@ export const getCartById = cartId => {
   } catch (error) {
     throw new Meteor.Error(
       `${__filename}:getCartById.findOrFetchError`,
-      `Could not find or fetch product with cart id: '${cartId}'`,
+      `Could not find or fetch cart with cart id: '${cartId}'`,
       error
     );
   }
