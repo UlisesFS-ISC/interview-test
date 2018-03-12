@@ -4,8 +4,8 @@
 
 ### Firebase with facebook credentials for authentication.
 
-*Firebase authentication with both email and Facebook credentials. (log history implemented).
-*Authentication token handling and Meteor session implementation.
+* Firebase authentication with both email and Facebook credentials. (log history implemented).
+* Authentication token handling and Meteor session implementation.
 
 ### Shop and Cart implementation.
 
@@ -24,8 +24,16 @@
 Spinner md component created by:
 Mikkel Laursem.
 
+## Updates
+
+### 3/11/2018
+* I decided to create another branch to continue developing this assessment app further, for my implementation submission
+ was just set to provide functionality without adding anything in regards of modules or frameworks (aside from firebase and meteor sessions)
+* Redux + Saga implementation for the structure of the app.
+* Modal handling refactor for each page.
+
 ## Meteor session set-up
-Just run the command ' meteor add session ' to add the session module required to run the with "npm run start"
+Just run the command ' meteor add session ' to add the session module required to run the app the with "npm run start"
 
 ## Captures
 

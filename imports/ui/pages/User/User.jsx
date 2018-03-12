@@ -1,7 +1,6 @@
 // Framework
 import React, {Component} from "react";
 import {Session} from 'meteor/session';
-import {authHandler} from '../../../api/authentication/auth-handler';
 
 // Third-party
 import MDSpinner from "react-md-spinner";
@@ -100,12 +99,12 @@ class User extends Component {
         );
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const userName = Session.get('user');
         if (!userName) {
             this.props.history.push("/");
         }
-        this.props.initiateUserCalls();
+        this.props.initiateUserCalls(userName);
     }
 
 
