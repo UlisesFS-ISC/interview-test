@@ -8,8 +8,7 @@ const mapStateToProps = state => {
   return {
     userOrders: state.User.userOrders,
     userData: state.User.userData,
-    dataLoadFlag: state.User.dataLoadFlag,
-    errorMessage: state.User.errorMessage
+    dataLoadFlag: state.User.dataLoadFlag
   };
 };
 
@@ -17,7 +16,6 @@ const mapDispatchToProps = dispatch => {
   return {
     initiateUserCalls: userName =>
       dispatch(UserActions.initiateUserCalls(userName)),
-    cleanMessage: () => dispatch(UserActions.cleanMessage()),
     logOut: () => dispatch(UserActions.logOut())
   };
 };

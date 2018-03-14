@@ -12,20 +12,6 @@ const setUserData = data => {
   };
 };
 
-const showMessage = (message, serviceErrorFlag) => {
-  return {
-    type: "SHOW_MESSAGE",
-    message,
-    serviceErrorFlag
-  };
-};
-
-const cleanMessage = () => {
-  return {
-    type: "CLEAN_MESSAGES"
-  };
-};
-
 const logOut = () => {
   return {
     type: "LOG_OUT"
@@ -35,7 +21,5 @@ const logOut = () => {
 export const UserActions = {
   initiateUserCalls,
   setUserData,
-  showMessage,
-  cleanMessage,
   logOut
 };

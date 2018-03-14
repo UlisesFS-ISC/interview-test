@@ -3,6 +3,7 @@ import { take, takeEvery, put, call, cancelled } from "redux-saga/effects";
 import { Meteor } from "meteor/meteor";
 
 import { CartActions } from "../actions/Cart-Actions";
+import { NavigationActions } from "../actions/Navigation-Actions";
 
 function loadCart(action) {
   return eventChannel(emitter => {
@@ -110,7 +111,9 @@ export function* initiateCartCalls(action) {
       yield put(CartActions.setCartData(cartResponse));
     }
   } catch (e) {
-    yield put(CartActions.showMessage(e.message, true));
+    yield put(
+      NavigationActions.showMessage("Loading data error", e.message, true)
+    );
   } finally {
     if (yield cancelled()) {
       cartCall.close();
@@ -124,7 +127,13 @@ export function* removeCartItemCalls(action) {
   try {
     while (true) {
       const cartResponse = yield take(cartCall);
-      yield put(CartActions.showMessage("Item removed from your cart", false));
+      yield put(
+        NavigationActions.showMessage(
+          "Removed",
+          "Item removed from your cart",
+          false
+        )
+      );
       yield put(
         CartActions.removeCartItemSuccess(
           action.productId,
@@ -134,7 +143,7 @@ export function* removeCartItemCalls(action) {
       );
     }
   } catch (e) {
-    yield put(CartActions.showMessage(e.message, true));
+    yield put(NavigationActions.showMessage("Cart error", e.message, true));
   } finally {
     if (yield cancelled()) {
       cartCall.close();
@@ -149,10 +158,12 @@ export function* submitOrderCalls(action) {
     while (true) {
       yield take(cartCall);
       yield put(CartActions.submitOrderSuccess());
-      yield put(CartActions.showMessage("Order submitted!", false));
+      yield put(
+        NavigationActions.showMessage("Success", "Order submitted!", false)
+      );
     }
   } catch (e) {
-    yield put(CartActions.showMessage(e.message, true));
+    yield put(NavigationActions.showMessage("Submit error", e.message, true));
   } finally {
     if (yield cancelled()) {
       cartCall.close();

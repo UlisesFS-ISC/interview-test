@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { authHandler } from "../../api/authentication/auth-handler";
 
 import { UserActions } from "../actions/User-Actions";
+import { NavigationActions } from "../actions/Navigation-Actions";
 
 function loadUserInformation(action) {
   return eventChannel(emitter => {
@@ -48,7 +49,13 @@ export function* initiateUserCalls(action) {
       yield put(UserActions.setUserData(userResponse));
     }
   } catch (e) {
-    yield put(UserActions.showMessage(e.message));
+    yield put(
+      NavigationActions.showMessage(
+        "Error loading user details",
+        e.message,
+        true
+      )
+    );
   } finally {
     if (yield cancelled()) {
       userCall.close();

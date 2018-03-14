@@ -19,22 +19,6 @@ const UserReducer = (state = initialState, action) => {
       };
     }
 
-    case "SHOW_MESSAGE": {
-      let errorMessage = action.errorMessage;
-
-      return {
-        ...state,
-        errorMessage: errorMessage,
-        dataLoadFlag: true
-      };
-    }
-
-    case "CLEAN_MESSAGES":
-      return {
-        ...state,
-        errorMessage: null
-      };
-
     default:
       return state;
   }

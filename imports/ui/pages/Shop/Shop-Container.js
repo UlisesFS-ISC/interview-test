@@ -9,17 +9,14 @@ const mapStateToProps = state => {
     merchants: state.Shop.merchants,
     index: state.Shop.index,
     limit: state.Shop.limit,
-    dataLoadFlag: state.Shop.dataLoadFlag,
-    serviceErrorFlag: state.Shop.serviceErrorFlag,
-    message: state.Shop.message
+    dataLoadFlag: state.Shop.dataLoadFlag
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     initiateMerchantCalls: (start, end) =>
-      dispatch(ShopActions.initiateMerchantCalls(start, end)),
-    cleanMessage: () => dispatch(ShopActions.cleanMessage())
+      dispatch(ShopActions.initiateMerchantCalls(start, end))
   };
 };
 

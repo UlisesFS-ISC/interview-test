@@ -7,12 +7,9 @@ import MDSpinner from "react-md-spinner";
 
 // Components
 import { Row, Col } from "reactstrap";
-import Page from "../../containers/Page/Page.jsx";
+import Page from "../../containers/Page/Page-Container";
 import Button from "../../components/Button.jsx";
 import Details from "../../components/Details.jsx";
-
-// Util
-import {MODAL_TYPES} from '../../Constants.js'
 
 class Cart extends Component {
 
@@ -34,21 +31,12 @@ class Cart extends Component {
     goUserPage = () => this.props.history.push("/user");
 
     render() {
-        const {items, serviceErrorFlag, totalAmount, dataLoadFlag, message, removeCartItemCalls, submitOrderCalls, cleanMessage} = this.props;
+        const {items, totalAmount, dataLoadFlag, removeCartItemCalls, submitOrderCalls} = this.props;
         let userName = Session.get('user');
         let currentTime = Date.now();
         let cartPageContent = null;
-        let modalProps;
 
-        if (message !== null) {
-            let modalType =  serviceErrorFlag ? MODAL_TYPES.ERROR : MODAL_TYPES.SUCCESS;
-            modalProps = {
-                type: modalType,
-                title: "Cart",
-                content: message,
-                onClose: cleanMessage
-            };
-        }
+
         if(!dataLoadFlag) {
             cartPageContent = (
                     <Row className="cart-page">
@@ -117,7 +105,6 @@ class Cart extends Component {
                   history
                   goBack={this.goBack}
                   goUserPage={this.goUserPage}
-                  modalProps={modalProps}
             >
                 {cartPageContent}
             </Page>

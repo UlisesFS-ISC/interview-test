@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 import { Session } from 'meteor/session';
 
 // Components
-import Page from "../../containers/Page/Page.jsx";
+import Page from "../../containers/Page/Page-Container";
 import ModalImpl from "../../components/Modal.jsx";
 import Button from "../../components/Button.jsx";
 

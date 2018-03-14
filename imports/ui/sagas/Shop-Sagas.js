@@ -3,6 +3,7 @@ import { take, takeEvery, put, call, cancelled } from "redux-saga/effects";
 import { Meteor } from "meteor/meteor";
 
 import { ShopActions } from "../actions/Shop-Actions";
+import { NavigationActions } from "../actions/Navigation-Actions";
 
 function loadMerchants(action) {
   return eventChannel(emitter => {
@@ -46,7 +47,9 @@ export function* initiateMerchantCalls(action) {
       yield put(ShopActions.setMerchantData(merchantsResponse));
     }
   } catch (e) {
-    yield put(ShopActions.showMessage(e.message, true));
+    yield put(
+      NavigationActions.showMessage("Error loading products", e.message, true)
+    );
   } finally {
     if (yield cancelled()) {
       merchantsCall.close();

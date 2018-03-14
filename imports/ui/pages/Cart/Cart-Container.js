@@ -8,9 +8,7 @@ const mapStateToProps = state => {
   return {
     items: state.Cart.items,
     totalAmount: state.Cart.totalAmount,
-    dataLoadFlag: state.Cart.dataLoadFlag,
-    serviceErrorFlag: state.Cart.serviceErrorFlag,
-    message: state.Cart.message
+    dataLoadFlag: state.Cart.dataLoadFlag
   };
 };
 
@@ -28,8 +26,7 @@ const mapDispatchToProps = dispatch => {
           quantity
         )
       ),
-    submitOrderCalls: order => dispatch(CartActions.submitOrderCalls(order)),
-    cleanMessage: () => dispatch(CartActions.cleanMessage())
+    submitOrderCalls: order => dispatch(CartActions.submitOrderCalls(order))
   };
 };
 

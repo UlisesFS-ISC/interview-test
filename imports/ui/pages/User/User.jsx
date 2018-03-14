@@ -7,13 +7,10 @@ import MDSpinner from "react-md-spinner";
 
 // Components
 import {Row} from "reactstrap";
-import Page from "../../containers/Page/Page.jsx";
+import Page from "../../containers/Page/Page-Container";
 import Button from "../../components/Button.jsx";
 import Details from "../../components/Details.jsx";
 import { Container } from "reactstrap";
-
-// Util
-import {MODAL_TYPES} from '../../Constants.js'
 
 
 class User extends Component {
@@ -118,18 +115,8 @@ class User extends Component {
 
     render() {
         const { UserOrdersSection, UserInfoSection } = User;
-        let { userOrders, errorMessage, userData, dataLoadFlag, history, cleanMessage, logOut } = this.props;
+        let { userOrders, userData, dataLoadFlag, history, logOut } = this.props;
         let userPageContent;
-        let modalProps = null;
-
-        if (errorMessage !== null) {
-            modalProps = {
-                type: MODAL_TYPES.ERROR,
-                title: "User",
-                content: errorMessage,
-                onClose: cleanMessage
-            };
-        }
 
         if(!dataLoadFlag) {
             userPageContent = (
@@ -160,7 +147,6 @@ class User extends Component {
             <Page pageTitle="User panel"
                   history goBack={this.goBack}
                   goUserPage={this.goUserPage}
-                  modalProps={modalProps}
             >
                 {userPageContent}
             </Page>

@@ -191,7 +191,7 @@ class UserForm extends PureComponent {
 
         if (modalMessage !== null) {
             let content = modalMessage;
-            let modalClassName = serviceErrorFlag ? MODAL_TYPES.SUCCESS:  MODAL_TYPES.ERROR;
+            let modalClassName = !serviceErrorFlag ? MODAL_TYPES.SUCCESS :  MODAL_TYPES.ERROR;
             modal = (
                 <ModalImpl
                     className={modalClassName}

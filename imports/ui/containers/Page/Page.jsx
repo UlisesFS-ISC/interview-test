@@ -8,18 +8,22 @@ import Header from "../../components/Header.jsx";
 import Footer from "../../components/Footer.jsx";
 import Modal from "../../components/Modal.jsx";
 
-const Page = ({children, pageTitle, goBack, goUserPage, modalProps}) => {
+//Util
+import {MODAL_TYPES} from "../../Constants";
+
+const Page = ({children, pageTitle, goBack, goUserPage, modalTitle, message, cleanMessage, serviceErrorFlag}) => {
 
         let modal = null;
+        let className = serviceErrorFlag ? MODAL_TYPES.ERROR : MODAL_TYPES.SUCCESS;
 
-        if (modalProps){
+        if (message !== null &&  modalTitle !== null) {
             modal =(
                 <Modal
-                    title={modalProps.title}
-                    className={modalProps.type}
-                    onClose={modalProps.onClose}
+                    title={modalTitle}
+                    className={className}
+                    onClose={cleanMessage}
                 >
-                    {modalProps.content}
+                    {message}
                 </Modal>
             )
         }

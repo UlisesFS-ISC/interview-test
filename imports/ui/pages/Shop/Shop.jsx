@@ -7,13 +7,11 @@ import MDSpinner from "react-md-spinner";
 
 // Components
 import {Row, Col} from "reactstrap";
-import Page from "../../containers/Page/Page.jsx";
+import Page from "../../containers/Page/Page-Container";
 import Button from "../../components/Button.jsx";
 import Product from "../../containers/Product/Product";
 import { Container } from "reactstrap";
 
-// Util
-import {MODAL_TYPES} from '../../Constants.js'
 
 const PAGINATION_ELEMENTS = 4;
 
@@ -107,20 +105,10 @@ class Shop extends Component {
     goBack = () => this.props.history.push("/");
     goUserPage = () => this.props.history.push("/user");
     render() {
-        const {merchants,  serviceErrorFlag, message, dataLoadFlag, limit, index, history, initiateMerchantCalls, cleanMessages} = this.props;
+        const {merchants, dataLoadFlag, limit, index, history, initiateMerchantCalls} = this.props;
         let {NavigationButtons, CartButton} = Shop;
         let shopPageContent = null;
-        let modalProps;
 
-        if (message !== null) {
-            let modalType =  serviceErrorFlag ? MODAL_TYPES.ERROR : MODAL_TYPES.SUCCESS;
-            modalProps = {
-                type: modalType,
-                title: "Shop",
-                content: message,
-                onClose: cleanMessages
-            };
-        }
         if (!dataLoadFlag) {
             shopPageContent = (
                     <div className="shop-spinner-container">
@@ -156,7 +144,6 @@ class Shop extends Component {
             <Page pageTitle="shop"
                   history goBack={this.goBack}
                   goUserPage={this.goUserPage}
-                  modalProps={modalProps}
             >
                 {shopPageContent}
             </Page>

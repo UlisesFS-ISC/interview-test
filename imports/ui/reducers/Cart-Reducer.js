@@ -48,25 +48,6 @@ const CartReducer = (state = initialState, action) => {
       };
     }
 
-    case "SHOW_MESSAGE": {
-      let message = action.message;
-      let serviceErrorFlag = action.serviceErrorFlag;
-
-      return {
-        ...state,
-        message: message,
-        serviceErrorFlag: serviceErrorFlag,
-        dataLoadFlag: true
-      };
-    }
-
-    case "CLEAN_MESSAGES":
-      return {
-        ...state,
-        serviceErrorFlag: false,
-        message: null
-      };
-
     default:
       return state;
   }

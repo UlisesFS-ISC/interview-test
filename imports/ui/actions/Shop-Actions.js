@@ -20,24 +20,8 @@ const setMerchantData = data => {
   };
 };
 
-const showMessage = (message, serviceErrorFlag) => {
-  return {
-    type: "SHOW_MESSAGE",
-    message,
-    serviceErrorFlag
-  };
-};
-
-const cleanMessage = () => {
-  return {
-    type: "CLEAN_MESSAGES"
-  };
-};
-
 export const ShopActions = {
   setDataFlag,
   initiateMerchantCalls,
-  setMerchantData,
-  showMessage,
-  cleanMessage
+  setMerchantData
 };

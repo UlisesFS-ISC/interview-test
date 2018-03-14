@@ -32,20 +32,6 @@ const submitOrderSuccess = () => {
   };
 };
 
-const showMessage = (message, serviceErrorFlag) => {
-  return {
-    type: "SHOW_MESSAGE",
-    message,
-    serviceErrorFlag
-  };
-};
-
-const cleanMessage = () => {
-  return {
-    type: "CLEAN_MESSAGES"
-  };
-};
-
 const removeCartItemCalls = (
   userName,
   productId,
@@ -78,8 +64,6 @@ export const CartActions = {
   setCartData,
   submitOrderCalls,
   submitOrderSuccess,
-  showMessage,
-  cleanMessage,
   removeCartItemCalls,
   removeCartItemSuccess
 };
