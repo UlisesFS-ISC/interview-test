@@ -27,10 +27,11 @@ Mikkel Laursem.
 ## Updates
 
 ### 3/11/2018
-* I decided to create another branch to continue developing this assessment app further, for my implementation submission
- was just set to provide functionality without adding anything in regards of modules or frameworks (aside from firebase and meteor sessions)
+* I decided to create another branch to continue developing this assessment app, as my first submission
+ was just to provide functionality without adding anything in regards of modules or frameworks (aside from Firebase and Meteor sessions)
+ while following a coding style similar to what was already set in the starting test files.
 * Redux + Saga implementation for the structure of the app.
-* Modal handling refactor for each page.
+* Modal handling refactor for each page (managed by redux state).
 
 ## Meteor session set-up
 Just run the command ' meteor add session ' to add the session module required to run the app the with "npm run start"

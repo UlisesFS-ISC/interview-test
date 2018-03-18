@@ -58,12 +58,21 @@ const removeCartItemSuccess = (productId, price, quantity) => {
   };
 };
 
+const submitCartItemSuccess = (cartEntry, newStockValue) => {
+  return {
+    type: "SUBMIT_CART_ITEM_SUCCESS",
+    cartEntry,
+    newStockValue
+  };
+};
+
 export const CartActions = {
   setDataFlag,
   initiateCartCalls,
   setCartData,
   submitOrderCalls,
   submitOrderSuccess,
+  submitCartItemSuccess,
   removeCartItemCalls,
   removeCartItemSuccess
 };

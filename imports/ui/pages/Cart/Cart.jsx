@@ -23,7 +23,9 @@ class Cart extends Component {
         if (!userName) {
             this.props.history.push("/");
         }
-        this.props.initiateCartCalls(userName);
+        if (!this.props.dataLoadFlag) {
+            this.props.initiateCartCalls(userName);
+        }
     }
 
 

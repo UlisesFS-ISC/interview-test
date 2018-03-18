@@ -9,11 +9,11 @@ import MDSpinner from "react-md-spinner";
 import {Row, Col} from "reactstrap";
 import Page from "../../containers/Page/Page-Container";
 import Button from "../../components/Button.jsx";
-import Product from "../../containers/Product/Product";
+import Product from "../../containers/Product/Product-Container";
 import { Container } from "reactstrap";
 
 
-const PAGINATION_ELEMENTS = 4;
+export const PAGINATION_ELEMENTS = 4;
 
 class Shop extends Component {
 
@@ -85,31 +85,27 @@ class Shop extends Component {
     /*
      *****
      ***** Handles session redirect before mounting.
-     *****
+     ***** Dispatches action to load merchant, Cart and Product specific data.
      */
     componentWillMount() {
-        if (!Session.get('user')) {
+        let userName = Session.get('user');
+        if (!userName) {
             this.props.history.push("/");
         }
+        this.props.initiateMerchantCalls(0, PAGINATION_ELEMENTS);
+        this.props.initiateProductCalls();
+        this.props.initiateCartCalls(userName);
     }
 
-    /*
-     *****
-     ***** Dispatches action to load merchant data.
-     *****
-     */
-    componentDidMount(){
-        this.props.initiateMerchantCalls(0, PAGINATION_ELEMENTS);
-    }
 
     goBack = () => this.props.history.push("/");
     goUserPage = () => this.props.history.push("/user");
     render() {
-        const {merchants, dataLoadFlag, limit, index, history, initiateMerchantCalls} = this.props;
+        const {merchants, dataLoadFlag, limit, index, history, initiateMerchantCalls, likeDataLoadFlag, cartDataLoadFlag} = this.props;
         let {NavigationButtons, CartButton} = Shop;
         let shopPageContent = null;
 
-        if (!dataLoadFlag) {
+        if (!dataLoadFlag || !likeDataLoadFlag || !cartDataLoadFlag) {
             shopPageContent = (
                     <div className="shop-spinner-container">
                         <h1>{"Loading "}</h1>

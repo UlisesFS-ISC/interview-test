@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 
 import { ShopActions } from "../actions/Shop-Actions";
 import { NavigationActions } from "../actions/Navigation-Actions";
+import { PAGINATION_ELEMENTS } from "../pages/Shop/Shop";
 
 function loadMerchants(action) {
   return eventChannel(emitter => {
@@ -28,7 +29,7 @@ function loadMerchants(action) {
       } else {
         emitter({
           merchants: merchants,
-          limit: response / 4,
+          limit: response / PAGINATION_ELEMENTS,
           index: action.end
         });
         emitter(END);

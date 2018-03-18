@@ -48,6 +48,21 @@ const CartReducer = (state = initialState, action) => {
       };
     }
 
+    case "SUBMIT_CART_ITEM_SUCCESS": {
+      let newUserCartItems = state.items;
+      newUserCartItems.push(action.cartEntry);
+      let newTotalAmount =
+        state.totalAmount +
+        parseFloat(action.cartEntry.price) *
+          parseFloat(action.cartEntry.quantity);
+      return {
+        ...state,
+        totalAmount: newTotalAmount,
+        items: newUserCartItems,
+        dataLoadFlag: true
+      };
+    }
+
     default:
       return state;
   }

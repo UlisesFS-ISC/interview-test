@@ -77,6 +77,23 @@ export const getLikesByProductId = productId => {
   }
 };
 
+/**
+ * Get an like by productId
+ *
+ * @returns {Object} A single like object.
+ */
+export const getLikes = () => {
+  try {
+    return Likes.find().fetch();
+  } catch (error) {
+    throw new Meteor.Error(
+      `${__filename}:getLikeByProductId.findOrFetchError`,
+      `Could not find or fetch likes `,
+      error
+    );
+  }
+};
+
 export const insertLike = like => {
   try {
     return Likes.insert(like);
@@ -107,6 +124,7 @@ Meteor.methods({
   "likes.getLikeById": getLikeById,
   "likes.getLikesByUserName": getLikesByUserName,
   "likes.getLikesByProductId": getLikesByProductId,
+  "likes.getLikes": getLikes,
   "likes.insertLike": insertLike,
   "likes.removeLike": removeLike
 });

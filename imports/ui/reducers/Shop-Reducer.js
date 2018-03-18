@@ -20,10 +20,10 @@ const ShopReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        dataLoadFlag: true,
         merchants: merchants,
         limit: limit,
-        index: index
+        index: index,
+        dataLoadFlag: true
       };
     }
 
